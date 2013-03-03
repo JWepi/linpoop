@@ -7,7 +7,7 @@ Packet::Packet(void *packet) : _type(0), _origin(0), _target(0), _data(NULL), _p
 	extractPacket(packet);
 }
 
-Packet::Packet(char *type, int *origin, int *target, const char *data) : _type(0), _origin(0), _target(0), _data(NULL), _packet(NULL)
+Packet::Packet(char type, int origin, int target, const char *data) : _type(0), _origin(0), _target(0), _data(NULL), _packet(NULL)
 {
 	buildPacket(type, origin, target, data);
 }
@@ -18,14 +18,14 @@ Packet::~Packet()
 		free(_packet);
 }
 
-void Packet::buildPacket(char *type, int *origin, int *target, const char *data)
+void Packet::buildPacket(char type, int origin, int target, const char *data)
 {
 	std::cout << "building packet" << std::endl;
 	_packet = malloc(sizeof(char) + sizeof(int) * 2 + strlen(data) + 1);
-	memcpy(_packet, type, sizeof(*type));
-	memcpy((char *)_packet + sizeof(*type), origin, sizeof(*origin));
-	memcpy((char *)_packet + sizeof(*type) + sizeof(*origin), target, sizeof(*target));
-	memcpy((char *)_packet + sizeof(*type) + sizeof(*origin) + sizeof(*target), data, strlen(data) + 1);
+	memcpy(_packet, &type, sizeof(type));
+	memcpy((char *)_packet + sizeof(type), &origin, sizeof(origin));
+	memcpy((char *)_packet + sizeof(type) + sizeof(origin), &target, sizeof(target));
+	memcpy((char *)_packet + sizeof(type) + sizeof(origin) + sizeof(target), data, strlen(data) + 1);
 	std::cout << "packet built" << std::endl;
 }
 
@@ -50,7 +50,7 @@ void Packet::extractPacket(void *packet)
 
 char Packet::getType() const
 {
-	return (_type);
+	return ((_type < 0 || _type > 100) ? 0 : _type);
 }
 
 int Packet::getOrigin() const

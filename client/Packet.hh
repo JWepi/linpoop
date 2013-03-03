@@ -8,9 +8,9 @@ class	Packet
 {
 	public:
 		Packet(void *);
-		Packet(char *, int *, int *, const char *);
+		Packet(char, int, int, const char *);
 		~Packet();
-		void buildPacket(char *, int *, int *, const char *);
+		void buildPacket(char, int, int, const char *);
 		void extractPacket(void *packet);
 		char getType() const;
 		int getOrigin() const;
