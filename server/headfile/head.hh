@@ -27,6 +27,7 @@
 # include "color.hh"
 # include "core.hh"
 # include "listener.hh"
+# include "Packet.hh"
 # include "server.hh"
 # include "user.hh"
 # include "actions.hh"

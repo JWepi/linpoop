@@ -9,23 +9,23 @@ class Actions
     Core * core;
 
 // 2
-    int ReqCreateAccount(char * str);
+    Packet * ReqCreateAccount(const char * str);
 // 4
-    int ReqConnectUser(int userid, char * passwd);
+    Packet * ReqConnectUser(const char * str);
 // 6
-    int ReqAddFriend(int srcUserid, int dstUserid);
+    Packet * ReqAddFriend(int srcUserid, int dstUserid);
 // 7
-    int AnsFriendReq(int srcUserid, int dstUserid, char * str);
+    Packet * AnsFriendReq(int srcUserid, int dstUserid, const char * str);
 // 9
-    int UsrSentMsg(int srcUserid, int dstUserid, char * str);
+    Packet * UsrSentMsg(int srcUserid, int dstUserid, const char * str);
 // 11
-    int UsrSentMsgGroup(int srcUserid, int dstRoom, char * str);
+    Packet * UsrSentMsgGroup(int srcUserid, int dstRoom, const char * str);
 // 15
-    int UsrStatusMod(int userid, char * status);
+    Packet * UsrStatusMod(int userid, const char * status);
 // 16
-    int UsrReqSendFile(int srcUserid, int dstUserid, char * file);
+    Packet * UsrReqSendFile(int srcUserid, int dstUserid, const char * file);
 // 17
-    int UsrRcvAnsSendFile(int srcUserid, int dstUserid, char * answer);
+    Packet * UsrRcvAnsSendFile(int srcUserid, int dstUserid, const char * answer);
 
   public:
     Actions(Core * c);
@@ -34,28 +34,28 @@ class Actions
 
     Core * getCore();
 
-    int Guidance(int pack);
+    Packet * Guidance(Packet * pack);
 
 //3
-    int AnsCreateAccount(int userid);
+    Packet * AnsCreateAccount(int userid);
 //5    
-    int AnsConnectUser(int userid);
+    Packet * AnsConnectUser(int userid);
 //8
-    int ReqSendAddFriend(int srcUserid, int dstUserid);
+    Packet * ReqSendAddFriend(int srcUserid, int dstUserid);
 //20
-    int ReqSendAnsAddFriend(int srcUserid, int dstUserid);    
+    Packet * ReqSendAnsAddFriend(int srcUserid, int dstUserid, const char * answer);    
 //10
-    int SendMsg(int srcUserid, int dstUserid, char * str);
+    Packet * SendMsg(int srcUserid, int dstUserid, const char * str);
 //12
-    int SendMsgGroup(int srcUserid, int dstRoom, char * str);
+    Packet * SendMsgGroup(int srcUserid, int dstRoom, const char * str);
 //13
-    int UserConnected(int userid);
+    Packet * UserConnected(int userid);
 //14
-    int UserDisconnected(int userid);
+    Packet * UserDisconnected(int userid);
 //18
-    int SendUsrReqSendFile(int srcUserid, int dstUserid, char * file);
+    Packet * SendUsrReqSendFile(int srcUserid, int dstUserid, const char * file);
 //19
-    int SendUsrAnsReqSendFile(int srcUserid, int dstUserid, char * answer);
+    Packet * SendUsrAnsReqSendFile(int srcUserid, int dstUserid, const char * answer);
 };
 
 #endif

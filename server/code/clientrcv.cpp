@@ -23,8 +23,8 @@ void * Clientrcv::golisten(void * val)
 
     std::cout << "I received : " << buff << std::endl << std::endl;
 
-    int packet = strlen(buff);
-    
+    Packet * packet = new Packet((void *)buff);
+
     this->serv->sendpacket(this->acceptfd, (char*)this->actions->Guidance(packet));
   }
   return(NULL);
