@@ -23,15 +23,19 @@ Core * Actions::getCore()
 
 Packet * Actions::Guidance(Packet * pack)
 {
-  std::cout << "Guiding data " << pack << std::endl;
+  std::cout << "Packet received : " << std::endl;
+
+  std::cout << "   - Request type : " << (int)pack->getType() << std::endl;
+  std::cout << "   - Request src  : " << pack->getOrigin() << std::endl;
+  std::cout << "   - Request dst  : " << pack->getTarget() << std::endl;
+  std::cout << "   - Request data : " << pack->getData() << std::endl << std::endl;
 
   // Switch a remplacer par une map
 
   switch(pack->getType())
   {
     case 1 :
-      //ping
-    break;
+      return(Ping(0));
     case 2 :
       return(ReqCreateAccount(pack->getData()));
     case 4 :
@@ -113,11 +117,19 @@ Packet * Actions::UsrRcvAnsSendFile(int srcUserid, int dstUserid, const char * a
   return(SendUsrAnsReqSendFile(srcUserid, dstUserid, answer));
 }
 
+//1
+Packet * Actions::Ping(int userid)
+{
+  
+  Packet * pack = new Packet (1, 1, userid, "");
+
+  return(pack);
+}
 //3
 Packet * Actions::AnsCreateAccount(int userid)
 {
   
-  Packet * pack = new Packet (3, 1, userid, "");
+  Packet * pack = new Packet (3, 1, userid, "Bite");
 
   return(pack);
 }
@@ -125,7 +137,7 @@ Packet * Actions::AnsCreateAccount(int userid)
 Packet * Actions::AnsConnectUser(int userid)
 {
 
-  Packet * pack = new Packet (5, 1, userid, "0");
+  Packet * pack = new Packet (5, 1, userid, "Bite");
 
   return(pack);
 }

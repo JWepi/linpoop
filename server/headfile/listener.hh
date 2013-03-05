@@ -6,7 +6,7 @@ class Listener
 
   public:
 
-    virtual void * golisten(void * val) {};
+    virtual void * golisten(void * val);
     Listener();
     ~Listener();
 };

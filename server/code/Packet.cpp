@@ -18,7 +18,7 @@ Packet::~Packet()
 
 void * Packet::buildPacket()
 {
-//	void * packet = malloc(sizeof(char) + sizeof(int) * 2 + strlen(data) + 1);
+//	void * packet = malloc(sizeof(char) + sizeof(int) * 2 + strlen(this->_data) + 1);
         void * packet = malloc(this->getPacketSize());
 
         if (Datas::DEBUG)

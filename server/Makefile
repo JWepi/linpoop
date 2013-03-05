@@ -11,7 +11,8 @@ SRC=	code/main.cpp \
 	code/actions.cpp \
 	code/user.cpp \
 	code/clientrcv.cpp \
-        code/Packet.cpp
+        code/Packet.cpp \
+	code/dataBuilder.cpp
 
 OBJ=	$(SRC:.cpp=.o)
 

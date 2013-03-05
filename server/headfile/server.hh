@@ -16,7 +16,7 @@ class LPServer : public Listener
   public:
     void * golisten(void * val);
     void build();
-    void sendpacket(int fd, char * pack);
+    void sendpacket(int fd, char * pack, int size);
 
     LPServer(Actions * a);
     LPServer();

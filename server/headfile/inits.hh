@@ -15,7 +15,7 @@ class Datas
     //STATIC DATAS
 
     // Number of protocol listeners
-    static const int NBTHREAD = 1;
+    static const int NBTHREAD = 1000;
     // Maximum number of loops
     static const int NBLOOPS = 20;
     // If set at 1, loops will last forever, if set at 0 they will loop NBLOOPS times

@@ -21,6 +21,7 @@
 # include <string>
 # include <iostream>
 # include <map>
+# include <sstream>
 
 # include "inits.hh"
 # include "utils.hh"
@@ -32,6 +33,7 @@
 # include "user.hh"
 # include "actions.hh"
 # include "clientrcv.hh"
+# include "dataBuilder.hh"
 
 // Declaration of global variables
 extern Datas * data;
@@ -40,7 +42,7 @@ extern Colors * col;
 extern void killed(int sig);
 
 /* main.c */
-pthread_t listen_tome(int index, Listener * listener);
-void wait_threads_end();
+pthread_t listen_tome(Clientrcv * crcv);
+void * client_listener(void * cli);
 
 #endif

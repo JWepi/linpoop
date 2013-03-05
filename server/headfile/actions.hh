@@ -36,6 +36,8 @@ class Actions
 
     Packet * Guidance(Packet * pack);
 
+//1
+    Packet * Ping(int userid);
 //3
     Packet * AnsCreateAccount(int userid);
 //5    

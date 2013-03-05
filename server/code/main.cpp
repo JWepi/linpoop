@@ -3,9 +3,6 @@
 
 int main(int ac, char** av)
 {
-  int i = 0;
-  int index;
-
   col->cout(Colors::GREEN);
   printf("[Main] Activity : Program started !\n\n");
   col->cend();
@@ -14,10 +11,6 @@ int main(int ac, char** av)
   Actions * actions = new Actions(core);
   LPServer * serv = new LPServer(actions);
   serv->build();
-
-  listen_tome(0, serv);
-
-  wait_threads_end();
 
   usleep(1000);
   delete(data);
@@ -28,30 +21,29 @@ int main(int ac, char** av)
   return (0);
 }
 
-// index -> indicates which thread shall be started in the thread array
-//
-// this functions creates and starts a new thread
-pthread_t listen_tome(int index, Listener * listener)
+
+pthread_t listen_tome(Clientrcv * crcv)
 {
+  int i = -1;
   int val = 0;
 
-  val = pthread_create(&data->my_threads[index], NULL, (void *(*)(void *))listener->golisten(NULL), (void *)val);
-  if (val != 0)
-    utils->err("listen_tome", "pthread create error");
+  while (++i < Datas::NBTHREAD)
+  {
+    if (data->my_threads[i] == (pthread_t)NULL)
+    {
+      val = pthread_create(&data->my_threads[i], NULL, &client_listener, (void *)crcv);
+      if (val != 0)
+        utils->err("listen_tome", "pthread create error");
+      return(data->my_threads[i]);
+    }
+  }
 
-  return(data->my_threads[index]);
+  return((pthread_t)NULL);
 }
 
-// this function makes the program wait the end of all threads to terminate
-void wait_threads_end()
+void * client_listener(void * cli)
 {
-  int i;
+  Clientrcv * crcv = (Clientrcv *)cli;
 
-  i = -1;
-  col->cend();
-  while (data->my_threads[++i] != Datas::NBTHREAD)
-  {
-    if (data->my_threads[i] != (pthread_t)NULL)
-      pthread_join(data->my_threads[i], NULL);
-  }
+  crcv->golisten(NULL);
 }

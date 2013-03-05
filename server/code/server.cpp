@@ -10,18 +10,20 @@ void * LPServer::golisten(void * val)
     this->acceptfd = accept(this->sockfd, (struct sockaddr *) &this->client, &clientaddrlen);
 
     if (acceptfd == -1)
-      utils->err("Server::listen", "accept function failed");
+      utils->err("Server::golisten", "accept function failed");
 
     Clientrcv * cr;
     cr = new Clientrcv(this->acceptfd, this->actions, this);
-    cr->golisten(NULL);
+    listen_tome(cr);
+
+    std::cout << "A new client arrived" << std::endl << std::endl;
   }
 
   if (close(acceptfd) == -1)
-    utils->err("Server::listen", "close function on acceptfd failed");
+    utils->err("Server::golisten", "close function on acceptfd failed");
 
   if (close(sockfd) == -1)
-    utils->err("Server::listen", "close function on sockfd failed");
+    utils->err("Server::golisten", "close function on sockfd failed");
 }
 
 void LPServer::build()
@@ -41,27 +43,18 @@ void LPServer::build()
   server.sin_port = htons(8008);
   server.sin_addr.s_addr = INADDR_ANY;
   
-  if (-1 == bind(sockfd, (const struct sockaddr *) &server, sizeof(struct sockaddr_in)))
+  if (bind(sockfd, (const struct sockaddr *) &server, sizeof(struct sockaddr_in)) == -1)
     utils->err("Server::build", "bind function failed"); 
 
-  if (-1 == listen(sockfd, 0))
+  if (listen(sockfd, 0) == -1)
     utils->err("Server::build", "listen function failed"); 
 
-
-
-/*
- if (-1 == send(acceptfd, "lala", (size_t) strlen(reply) + 1, 0))
- { 
-perror("send parent"); 
-return 1;
- }
-*/
-
+  this->golisten(NULL);
 }
 
-void LPServer::sendpacket(int fd, char * pack)
+void LPServer::sendpacket(int fd, char * pack, int size)
 {
-  if (send(fd, pack, strlen(pack) + 1, 0) == -1)
+  if (send(fd, pack, size, 0) == -1)
     utils->err("Server::sendpacket", "send function failed");
 }
 

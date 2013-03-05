@@ -13,7 +13,7 @@ void * Clientrcv::golisten(void * val)
     bytesreceived = recv(this->acceptfd, buff, Datas::BUFF, 0);
 
     if (bytesreceived == -1)
-      utils->err("LPServer::listen", "recv function failed");
+      utils->err("Clientrcv::golisten", "recv function failed");
     
     if (bytesreceived == 0)
     {
@@ -23,9 +23,34 @@ void * Clientrcv::golisten(void * val)
 
     std::cout << "I received : " << buff << std::endl << std::endl;
 
-    Packet * packet = new Packet((void *)buff);
+    Packet * recvpacket = new Packet((void *)buff);
+    
+    Packet * sendpacket = this->actions->Guidance(recvpacket);
 
-    this->serv->sendpacket(this->acceptfd, (char*)this->actions->Guidance(packet));
+    if (sendpacket->getType() == 5 && sendpacket->getTarget() != 0)
+      this->actions->getCore()->adduser(sendpacket->getTarget(), this->acceptfd);
+
+
+    if (Datas::DEBUG)
+    {
+      std::cout << "Created packet : " << std::endl;
+
+      std::cout << "   - Request type : " << sendpacket->getType() << std::endl;
+      std::cout << "   - Request src  : " << sendpacket->getOrigin() << std::endl;
+      std::cout << "   - Request dst  : " << sendpacket->getTarget() << std::endl;
+      std::cout << "   - Request data : " << sendpacket->getData() << std::endl << std::endl;
+
+      std::cout << " --- Verification --- " << std::endl << std::endl;
+
+      Packet * verifpacket = new Packet(sendpacket->buildPacket());
+
+      verifpacket = this->actions->Guidance(verifpacket);
+
+      std::cout << " --- Verification --- " << std::endl << std::endl;
+    }
+
+    this->serv->sendpacket(this->acceptfd, (char *)sendpacket->buildPacket(),
+    sendpacket->getPacketSize());
   }
   return(NULL);
 }
