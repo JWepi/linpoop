@@ -7,7 +7,7 @@ Packet::Packet(void *packet) : _type(0), _origin(0), _target(0), _data(NULL), _p
 	extractPacket(packet);
 }
 
-Packet::Packet(char type, int origin, int target, const char *data) : _type(0), _origin(0), _target(0), _data(NULL), _packet(NULL)
+Packet::Packet(char type, int origin, int target, const char *data) : _type(type), _origin(origin), _target(target), _data(data), _packet(NULL)
 {
 	buildPacket(type, origin, target, data);
 }

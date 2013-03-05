@@ -1,5 +1,5 @@
 #ifndef	PACKET_H_
-#define	PACKET_H
+#define	PACKET_H_
 
 #include <iostream>
 #include <string>
