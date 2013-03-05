@@ -21,174 +21,173 @@ Core * Actions::getCore()
   return (this->core);
 }
 
-int Actions::Guidance(int pack)
+Packet * Actions::Guidance(Packet * pack)
 {
   std::cout << "Guiding data " << pack << std::endl;
 
   // Switch a remplacer par une map
 
-  switch(pack)
+  switch(pack->getType())
   {
     case 1 :
       //ping
     break;
     case 2 :
-      return(ReqCreateAccount("user:password"));
+      return(ReqCreateAccount(pack->getData()));
     case 4 :
-      return(ReqConnectUser(0, "password"));
+      return(ReqConnectUser(pack->getData()));
     case 6 :
-      return(ReqAddFriend(0, 1));
+      return(ReqAddFriend(pack->getOrigin(), pack->getTarget()));
     case 7 :
-      return(AnsFriendReq(0, 1, "1"));
+      return(AnsFriendReq(pack->getOrigin(), pack->getTarget(), pack->getData()));
     case 9 :
-      return(UsrSentMsg(0, 1, "Coucou"));
+      return(UsrSentMsg(pack->getOrigin(), pack->getTarget(), pack->getData()));
     case 11 :
-      return(UsrSentMsgGroup(0, 1, "Coucou a tous"));
+      return(UsrSentMsgGroup(pack->getOrigin(), pack->getTarget(), pack->getData()));
     case 15 :
-      return(UsrStatusMod(0, "Online"));
+      return(UsrStatusMod(pack->getOrigin(), pack->getData()));
     case 16 :
-      return(UsrReqSendFile(0, 1, "info.txt"));
+      return(UsrReqSendFile(pack->getOrigin(), pack->getTarget(), pack->getData()));
     case 17 :
-      return(UsrRcvAnsSendFile(0, 1, "1"));
+      return(UsrRcvAnsSendFile(pack->getOrigin(), pack->getTarget(), pack->getData()));
 
   }
 }
 
 
 // 2
-int Actions::ReqCreateAccount(char * str)
+Packet * Actions::ReqCreateAccount(const char * str)
 {
-  int userid = 0;
+  int userid = Datas::GetNewId();
+
   // Create account
 
-  // Create userid
   return(AnsCreateAccount(userid));
 }
 // 4
-int Actions::ReqConnectUser(int userid, char * passwd)
+Packet * Actions::ReqConnectUser(const char * str)
 {
+  int userid = Datas::CheckUser((char *)str);
   // Check password
 
   return(AnsConnectUser(userid));
 }
 // 6
-int Actions::ReqAddFriend(int srcUserid, int dstUserid)
+Packet * Actions::ReqAddFriend(int srcUserid, int dstUserid)
 {
   // Check dst valide
 
   return(ReqSendAddFriend(srcUserid, dstUserid));
 }
 // 7
-int Actions::AnsFriendReq(int srcUserid, int dstUserid, char * str)
+Packet * Actions::AnsFriendReq(int srcUserid, int dstUserid, const char * str)
 {
   // Check str
 
-  return(ReqSendAnsAddFriend(srcUserid, dstUserid));
+  return(ReqSendAnsAddFriend(srcUserid, dstUserid, str));
 }
 // 9
-int Actions::UsrSentMsg(int srcUserid, int dstUserid, char * str)
+Packet * Actions::UsrSentMsg(int srcUserid, int dstUserid, const char * str)
 {
   return(SendMsg(srcUserid, dstUserid, str));
 }
 // 11
-int Actions::UsrSentMsgGroup(int srcUserid, int dstRoom, char * str)
+Packet * Actions::UsrSentMsgGroup(int srcUserid, int dstRoom, const char * str)
 {
   return(SendMsgGroup(srcUserid, dstRoom, str));
 }
 // 15
-int Actions::UsrStatusMod(int userid, char * status)
+Packet * Actions::UsrStatusMod(int userid, const char * status)
 {
   // Send user status modification to contacts
-  return(0);
+  return(NULL);
 }
 // 16
-int Actions::UsrReqSendFile(int srcUserid, int dstUserid, char * file)
+Packet * Actions::UsrReqSendFile(int srcUserid, int dstUserid, const char * file)
 {
   return(SendUsrReqSendFile(srcUserid, dstUserid, file));
 }
 // 17
-int Actions::UsrRcvAnsSendFile(int srcUserid, int dstUserid, char * answer)
+Packet * Actions::UsrRcvAnsSendFile(int srcUserid, int dstUserid, const char * answer)
 {
   return(SendUsrAnsReqSendFile(srcUserid, dstUserid, answer));
 }
 
 //3
-int Actions::AnsCreateAccount(int userid)
+Packet * Actions::AnsCreateAccount(int userid)
 {
-  int pack = 0;
-  // build packet
+  
+  Packet * pack = new Packet (3, 1, userid, "");
 
   return(pack);
 }
 //5    
-int Actions::AnsConnectUser(int userid)
+Packet * Actions::AnsConnectUser(int userid)
 {
-  int pack = 0;
-  // build packet
+
+  Packet * pack = new Packet (5, 1, userid, "0");
 
   return(pack);
 }
 //8
-int Actions::ReqSendAddFriend(int srcUserid, int dstUserid)
+Packet * Actions::ReqSendAddFriend(int srcUserid, int dstUserid)
 {
-  int pack = 0;
-  // build packet
+
+  Packet * pack = new Packet (8, srcUserid, dstUserid, "");
 
   return(pack);
 }
 //20
-int Actions::ReqSendAnsAddFriend(int srcUserid, int dstUserid)
+Packet * Actions::ReqSendAnsAddFriend(int srcUserid, int dstUserid, const char * answer)
 {
-  int pack = 0;
-  // build packet
+  
+  Packet * pack = new Packet (20, srcUserid, dstUserid, answer);
 
   return(pack);
 }
 //10
-int Actions::SendMsg(int srcUserid, int dstUserid, char * str)
+Packet * Actions::SendMsg(int srcUserid, int dstUserid, const char * str)
 {
-  int pack = 0;
-  // build packet
+  Packet * pack = new Packet (10, srcUserid, dstUserid, str);
 
   return(pack);
 }
 //12
-int Actions::SendMsgGroup(int srcUserid, int dstRoom, char * str)
+Packet * Actions::SendMsgGroup(int srcUserid, int dstRoom, const char * str)
 {
-  int pack = 0;
-  // build packet
+  Packet * pack = new Packet (12, srcUserid, dstRoom, str);
 
   return(pack);
 }
 //13
-int Actions::UserConnected(int userid)
+Packet * Actions::UserConnected(int userid)
 {
-  int pack = 0;
-  // build packet
+  Packet * pack;
+
+  // Parcourir users en ligne et envoyer la notif
 
   return(pack);
 }
 //14
-int Actions::UserDisconnected(int userid)
+Packet * Actions::UserDisconnected(int userid)
 {
-  int pack = 0;
-  // build packet
+  Packet * pack;
+
+  // Parcourir users en ligne et envoyer la notif
 
   return(pack);
 }
 //18
-int Actions::SendUsrReqSendFile(int srcUserid, int dstUserid, char * file)
+Packet * Actions::SendUsrReqSendFile(int srcUserid, int dstUserid, const char * file)
 {
-  int pack = 0;
-  // build packet
+  Packet * pack = new Packet (18, srcUserid, dstUserid, file);
 
   return(pack);
 }
 //19
-int Actions::SendUsrAnsReqSendFile(int srcUserid, int dstUserid, char * answer)
+Packet * Actions::SendUsrAnsReqSendFile(int srcUserid, int dstUserid, const char * answer)
 {
-  int pack = 0;
-  // build packet
+  Packet * pack = new Packet (19, srcUserid, dstUserid, answer);
 
   return(pack);
 }

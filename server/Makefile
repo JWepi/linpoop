@@ -10,7 +10,8 @@ SRC=	code/main.cpp \
 	code/listener.cpp \
 	code/actions.cpp \
 	code/user.cpp \
-	code/clientrcv.cpp
+	code/clientrcv.cpp \
+        code/Packet.cpp
 
 OBJ=	$(SRC:.cpp=.o)
 

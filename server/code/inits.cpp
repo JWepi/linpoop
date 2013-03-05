@@ -1,6 +1,18 @@
 
 #include "head.hh"
 
+int Datas::GetNewId()
+{
+
+  return(666);
+}
+
+int Datas::CheckUser(char * str)
+{
+
+  return(666);
+}
+
 void Datas::init(void)
 {
   int i;
