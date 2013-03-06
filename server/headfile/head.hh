@@ -22,6 +22,7 @@
 # include <iostream>
 # include <map>
 # include <sstream>
+# include <fstream>
 
 # include "inits.hh"
 # include "utils.hh"
@@ -34,6 +35,7 @@
 # include "actions.hh"
 # include "clientrcv.hh"
 # include "dataBuilder.hh"
+# include "usersManager.hh"
 
 // Declaration of global variables
 extern Datas * data;

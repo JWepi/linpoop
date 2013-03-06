@@ -88,17 +88,20 @@ void User::setRawItems(std::string str)
     std::string extr;
     std::getline(friendss, extr, delim);
 
-    std::istringstream iss(extr);
-    std::string first, second;
+    if (extr.size() > 0)
+    {
+      std::istringstream iss(extr);
+      std::string first, second;
 
-    std::getline(iss, first, equal);
-    std::getline(iss, second, equal);
+      std::getline(iss, first, equal);
+      std::getline(iss, second, equal);
 
-    int val;
-    std::istringstream check(first);
+      int val;
+      std::istringstream check(first);
 
-    check >> val;
-    this->addFriend(val, second);
+      check >> val;
+      this->addFriend(val, second);
+    }
   }
 }
 

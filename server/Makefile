@@ -12,7 +12,8 @@ SRC=	code/main.cpp \
 	code/user.cpp \
 	code/clientrcv.cpp \
         code/Packet.cpp \
-	code/dataBuilder.cpp
+	code/dataBuilder.cpp \
+        code/usersManager.cpp
 
 OBJ=	$(SRC:.cpp=.o)
 
@@ -41,7 +42,7 @@ lclean:
 		@printf "\tlogfiles have been removed !!\n"
 
 dclean:
-		rm -f data/*
+		rm -f data/users/*
 		@printf "\tdata files have been removed !!\n"
 
 sclean:		dclean lclean fclean
