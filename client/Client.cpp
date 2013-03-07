@@ -7,6 +7,9 @@
 #include	<stdlib.h>
 #include	"Client.hh"
 #include	"Packet.hh"
+#include	"dataBuilder.hh"
+
+int		Client::_id = 0;
 
 Client::Client(const std::string &hostname, int port) : _sockfd(0), _port(port), _host(hostname.c_str())
 {
@@ -89,7 +92,11 @@ void	*Client::readServer(void *arg)
 		switch (type)
 		{
 			case 1:
-				c->client_ping(p);
+				c->client_ping();
+				break;
+			case 3:
+				Databuilder	d(p->getData());
+				c->receive_answer_create_account(&d);
 				break;
 				/* AJOUTER ICI TOUS LES CAS DE REQUETES A TRAITER */
 		}
@@ -97,12 +104,171 @@ void	*Client::readServer(void *arg)
 	return (NULL);
 }
 
-int		Client::client_ping(Packet *p)
+void	Client::client_ping()
 {
-	std::cout << "ping recu" << std::endl;
+	Packet	p(1, _id, 1, "");
+
+	send_msg(&p);
 }
 
-int		Client::create_account(char *login, char *pw)
+void	Client::create_account(char *login, char *pw)
+{
+	Databuilder	d;
+	std::string	result;
+
+	d.setItem("nick", login);
+	d.setItem("pwd", pw);
+	result = d.build();
+
+	Packet	p(2, _id, 1, result.c_str());
+	send_msg(&p);
+	_login = login;
+	_pw = pw;
+}
+
+int		Client::receive_answer_create_account(Databuilder *d)
+{
+	int	ans;
+
+	ans = d->getIntItem("answer");
+	if (!ans)
+	{
+		_login = NULL;
+		_pw = NULL;
+	}
+	return (ans);
+}
+
+int		Client::connect_account()
+{
+	Databuilder	d;
+	std::string	data;
+
+	d.setItem("pwd", _pw);
+	data = d.build();
+	if (_login && _pw)
+	{
+		Packet	p(4, _id, 1, data.c_str());
+		send_msg(&p);
+		return (1);
+	}
+	else
+		return (0);
+}
+
+int		Client::receive_answer_connect_account(Databuilder *d)
+{
+/*	int	ans;
+
+	ans = d->getIntItem("User");
+	if (!ans)
+	{
+		_login = NULL;
+		_pw = NULL;
+	}
+	return (ans);*/
+}
+
+void	Client::send_friend_request(int id)
+{
+	Packet	p(6, _id, id, "");
+
+	send_msg(&p);
+}
+
+void	Client::answer_friend_request(int id, int answer)
+{
+	Databuilder	d;
+	std::string	data;
+
+	d.setItem("answer", answer);
+	data = d.build();
+	Packet	p(7, _id, id, data.c_str());
+	send_msg(&p);
+}
+
+void	Client::receive_friend_request(int id)
 {
 
 }
+
+void	Client::receive_answer_friend_request(int id)
+{
+
+}
+
+void	Client::send_message_to_user(int id, std::string &msg)
+{
+	Databuilder	d;
+	std::string	data;
+
+	d.setItem("msg", msg);
+	data = d.build();
+	Packet	p(9, _id, id, data.c_str());
+	send_msg(&p);
+}
+
+void	Client::receive_message_from_user(int id)
+{
+
+}
+
+void	Client::send_message_to_group(int id, std::string &msg)
+{
+	Databuilder	d;
+	std::string	data;
+
+	d.setItem("msg", msg);
+	data = d.build();
+	Packet	p(11, _id, id, data.c_str());
+	send_msg(&p);
+}
+
+void	Client::receive_message_from_group(int id)
+{
+
+}
+
+void	Client::update_status(std::string &status)
+{
+// ASK DAVID
+	Databuilder	d;
+	std::string	data;
+
+	d.setItem("status", status);
+	data = d.build();
+	Packet	p(15, _id, 1, data.c_str());
+	send_msg(&p);
+}
+
+void	Client::send_file(int id, std::string &file_name)
+{
+	Databuilder	d;
+	std::string	data;
+
+	d.setItem("name", file_name);
+	data = d.build();
+	Packet	p(16, _id, 1, data.c_str());
+	send_msg(&p);
+}
+
+void	Client::accept_file(int id, int answer)
+{
+	Databuilder	d;
+	std::string	data;
+
+	d.setItem("answer", answer);
+	data = d.build();
+	Packet	p(17, _id, id, data.c_str());
+	send_msg(&p);
+}
+
+void	Client::receive_file(int id, char *file_name)
+{
+
+}
+
+/*void	Client::receive_answer_file(Databuilder *d)
+{
+
+}*/
