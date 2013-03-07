@@ -20,8 +20,6 @@ class Actions
     Packet * UsrSentMsg(int srcUserid, int dstUserid, const char * str);
 // 11
     Packet * UsrSentMsgGroup(int srcUserid, int dstRoom, const char * str);
-// 15
-    Packet * UsrStatusMod(int userid, const char * status);
 // 16
     Packet * UsrReqSendFile(int srcUserid, int dstUserid, const char * file);
 // 17
@@ -70,6 +68,8 @@ class Actions
     Packet * SendOnFriends(int userid, const char * list);
 //26
     Packet * SendInfos(int userid, const char * infos);
+// 15
+    Packet * UsrStatusMod(int userid, const char * status);
 };
 
 #endif
