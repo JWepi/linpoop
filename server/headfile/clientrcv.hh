@@ -13,6 +13,7 @@ class Clientrcv : public Listener
 
   public:
 
+    void hasLeft(int userid);
     void * golisten(void * val);
     Clientrcv(int afd, Actions * a, LPServer * s, std::string myip);
     Clientrcv();

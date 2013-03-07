@@ -95,7 +95,7 @@ Packet * Actions::ReqConnectUser(const char * str)
   {
     Databuilder * db = new Databuilder();
     userid = u->getIntItem("id");
-    db->setItem("status", "on");
+    db->setItem("status", "online");
     this->UsrStatusMod(userid, db->build().c_str());
   }
   else

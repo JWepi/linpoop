@@ -2,6 +2,7 @@ NAME=	client
 
 SRC=	Packet.cpp	\
 		Client.cpp	\
+		dataBuilder.cpp	\
 		main.cpp
 
 OBJ=	$(SRC:.cpp=.o)

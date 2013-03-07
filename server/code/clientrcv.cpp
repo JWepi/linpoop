@@ -1,6 +1,13 @@
 
 #include "head.hh"
 
+void Clientrcv::hasLeft(int userid)
+{
+  Databuilder * db = new Databuilder();
+  db->setItem("status", "offline");
+  this->actions->UsrStatusMod(userid, db->build().c_str());
+}
+
 void * Clientrcv::golisten(void * val)
 {
   char buff[Datas::BUFF];
@@ -18,7 +25,10 @@ void * Clientrcv::golisten(void * val)
     
     if (bytesreceived == 0)
     {
-      // Action a definir
+      std::cout << "Client disconnected with ip " << this->ip << std::endl;
+      this->hasLeft(userid);
+      this->actions->getCore()->rmvuser(userid);
+      
       return(NULL);
     }
 
@@ -62,6 +72,7 @@ void * Clientrcv::golisten(void * val)
   }
 
   this->actions->getCore()->rmvuser(userid);
+  this->hasLeft(userid);
 
   return(NULL);
 }
