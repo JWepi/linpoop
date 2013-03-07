@@ -49,7 +49,7 @@ void * Clientrcv::golisten(void * val)
       this->actions->getCore()->adduser(sendpacket->getTarget(), this->acceptfd);
     }
 
-    if (Datas::DEBUG)
+    if (1)
     {
       std::cout << "Created packet : " << std::endl;
 

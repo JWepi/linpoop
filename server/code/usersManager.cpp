@@ -36,31 +36,21 @@ void Usersmanager::deleteUser(int userid)
 
 User * Usersmanager::findUser(int userid)
 {
-  std::cout << "bite1" << std::endl;
   std::string infos;
-  std::cout << "bite2" << std::endl;
   std::stringstream filename;
-  std::cout << "bite3" << std::endl;
 
   filename << "data/users/" << userid << ".data";
-  std::cout << "bite4" << std::endl;
   std::string tmp = filename.str();
-  std::cout << "bite5" << std::endl;
 
   std::ifstream userfile(tmp.c_str());
-  std::cout << "bite6" << std::endl;
 
   getline(userfile, infos);
-  std::cout << "bite7" << std::endl;
   userfile.close();
-  std::cout << "bite8" << std::endl;
   std::cout << infos << std::endl;
 
 	User *uu = new User(infos);
-  std::cout << "bite9" << std::endl;
   if (infos.size() > 0)
 	  return (uu);
-  std::cout << "bitex" << std::endl;
   return(new User());
 }
 

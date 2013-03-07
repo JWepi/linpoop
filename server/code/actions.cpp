@@ -118,8 +118,8 @@ Packet * Actions::AnsFriendReq(int srcUserid, int dstUserid, const char * str)
     User * u1 = Usersmanager::findUser(srcUserid);
     User * u2 = Usersmanager::findUser(dstUserid);
 
-    u1->addFriend(u2->getIntItem("id"));
-    u2->addFriend(u1->getIntItem("id"));
+    u1->addFriend(u2->getIntItem("id"), u2->getStrItem("nick"));
+    u2->addFriend(u1->getIntItem("id"), u1->getStrItem("nick"));
 	std::cout << u1->getStrItem("nick") << " et " << u2->getStrItem("nick") << " sont amis" << std::endl;
     Usersmanager::setUserInfo(u1->getIntItem("id"), u1->build());
     Usersmanager::setUserInfo(u2->getIntItem("id"), u2->build());
@@ -179,7 +179,7 @@ Packet * Actions::ReqJoinRoom(int userid, int roomid)
     Usersmanager::setUserInfo(roomid, room->build());    
   }
   User * usr = Usersmanager::findUser(userid);
-  usr->addFriend(roomid);
+  usr->addFriend(roomid, room->getStrItem("nick"));
 
   Usersmanager::setUserInfo(userid, usr->build());
 
@@ -218,22 +218,16 @@ Packet * Actions::ReqModUser(int userid, const char * str)
 // 13
 Packet * Actions::ReqOnFriends(int userid)
 {
-  std::cout << "jesus" << std::endl;
   User * usr = Usersmanager::findUser(userid);
-  std::cout << "jesus" << std::endl;
   User * ret = new User();
-  std::cout << "jesus" << std::endl;
   std::map<int, std::string> flist = usr->getFriends();
-  std::cout << "jesus" << std::endl;
   std::map<int, std::string>::iterator it;
-  std::cout << "jesus" << std::endl;
   for(it = flist.begin(); it != flist.end(); it++)
   {
 	std::cout << it->second << " est mon ami" << std::endl;
     if(this->core->isusr(it->first))
-      ret->addFriend(it->first);
+      ret->addFriend(it->first, it->second);
   }
-  std::cout << "jesus" << std::endl;
 
   return(this->SendOnFriends(userid, ret->build().c_str()));
 }
