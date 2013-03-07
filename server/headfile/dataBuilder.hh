@@ -24,6 +24,7 @@ class Databuilder
 
     void init(std::string str);
     std::string build();
+    bool hasItem(std::string item);
 
     std::map<std::string, std::string> getStrItems();
     std::map<std::string, int> getIntItems();

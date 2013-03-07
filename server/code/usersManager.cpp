@@ -38,7 +38,6 @@ User * Usersmanager::findUser(int userid)
 {
   std::string infos;
   std::stringstream filename;
-  User * ret;
 
   filename << "data/users/" << userid << ".data";
   std::string tmp = filename.str();
@@ -46,10 +45,11 @@ User * Usersmanager::findUser(int userid)
   std::ifstream userfile(tmp.c_str());
 
   getline(userfile, infos);
-  ret = new User(infos);
-
   userfile.close();
-  return(ret);
+
+  if (infos.size() > 0)
+    return(new User(infos));
+  return(new User());
 }
 
 int Usersmanager::generateUserId()

@@ -126,3 +126,12 @@ std::map<std::string, int> Databuilder::getIntItems()
 {
   return(this->intItems);
 }
+
+bool Databuilder::hasItem(std::string item)
+{
+  if (this->strItems.find(item) != this->strItems.end() ||
+    this->intItems.find(item) != this->intItems.end())
+    return(true);
+  return(false);  
+}
+

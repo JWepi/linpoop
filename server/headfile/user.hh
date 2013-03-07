@@ -14,7 +14,7 @@ class User : public Databuilder
     User();
     ~User();
 
-    void addFriend(int userid, std::string nick);
+    void addFriend(int userid);
     void setRawItems(std::string str);
     
     std::string getFriendNick(int userid);

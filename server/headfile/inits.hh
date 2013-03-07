@@ -26,11 +26,8 @@ class Datas
     static const bool DEBUG = false;
     // If enabled, colors will appear in the program
     static const bool SHOW = true;
-    // Usual size of the buffer
+    // Buffer size
     static const int BUFF = 4096;
-
-    static int GetNewId();
-    static int CheckUser(char * str);
 
     void (* listners[Datas::NBTHREAD + 1])(void);
     pthread_t my_threads[Datas::NBTHREAD + 1];

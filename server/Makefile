@@ -42,10 +42,8 @@ lclean:
 		@printf "\tlogfiles have been removed !!\n"
 
 dclean:
-		rm -f data/users/*
+		rm -f data/users/*.data
 		@printf "\tdata files have been removed !!\n"
-
-sclean:		dclean lclean fclean
 
 re:		fclean all
 

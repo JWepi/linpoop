@@ -26,6 +26,18 @@ class Actions
     Packet * UsrReqSendFile(int srcUserid, int dstUserid, const char * file);
 // 17
     Packet * UsrRcvAnsSendFile(int srcUserid, int dstUserid, const char * answer);
+// 21
+    Packet * ReqJoinRoom(int userid, int roomid);
+// 22
+    Packet * ReqLeaveRoom(int userid, int dstRoom);
+// 23
+    Packet * ReqDelFriend(int srcUserid, int dstUserid);
+// 24
+    Packet * ReqModUser(int userid, const char * str);
+// 13
+    Packet * ReqOnFriends(int srcUserid);
+// 25
+    Packet * ReqInfos(int userid, int target);
 
   public:
     Actions(Core * c);
@@ -39,9 +51,9 @@ class Actions
 //1
     Packet * Ping(int userid);
 //3
-    Packet * AnsCreateAccount(int userid);
+    Packet * AnsCreateAccount(int userid, std::string tosend);
 //5    
-    Packet * AnsConnectUser(int userid);
+    Packet * AnsConnectUser(int userid, std::string tosend);
 //8
     Packet * ReqSendAddFriend(int srcUserid, int dstUserid);
 //20
@@ -50,14 +62,14 @@ class Actions
     Packet * SendMsg(int srcUserid, int dstUserid, const char * str);
 //12
     Packet * SendMsgGroup(int srcUserid, int dstRoom, const char * str);
-//13
-    Packet * UserConnected(int userid);
-//14
-    Packet * UserDisconnected(int userid);
 //18
     Packet * SendUsrReqSendFile(int srcUserid, int dstUserid, const char * file);
 //19
     Packet * SendUsrAnsReqSendFile(int srcUserid, int dstUserid, const char * answer);
+//14
+    Packet * SendOnFriends(int userid, const char * list);
+//26
+    Packet * SendInfos(int userid, const char * infos);
 };
 
 #endif

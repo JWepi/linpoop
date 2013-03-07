@@ -25,10 +25,14 @@ void User::init(std::string str)
   this->setRawItems(str);
 }
 
-void User::addFriend(int userid, std::string nick)
+void User::addFriend(int userid)
 {
-  if (this->friends.find(userid) == this->friends.end())
-    this->friends.insert(std::pair<int, std::string>(userid, nick));
+  User * usr = Usersmanager::findUser(userid);
+
+  if (usr->getIntItem("id") && this->friends.find(userid) == this->friends.end())
+  {
+    this->friends.insert(std::pair<int, std::string>(userid, usr->getStrItem("nick")));
+  }
 }
 
 std::string User::getFriendNick(int userid)
@@ -100,7 +104,7 @@ void User::setRawItems(std::string str)
       std::istringstream check(first);
 
       check >> val;
-      this->addFriend(val, second);
+      this->addFriend(val);
     }
   }
 }
