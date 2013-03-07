@@ -98,9 +98,9 @@ R RT 14 - Envoi de la liste des amis en ligne
 R RT 25 - Reception de demande d'infos
 P RT 26 - Envoi d'infos
 
-Format RT 2 -> "nick" : str{nickname}, "pwd" : str{password}
+Format RT 2 -> "nick" : str{nickname}
 Format RT 3 -> "answer" : int{0/1}
-Format RT 4 -> "pwd" : str{password}
+Format RT 4 -> "nick" : str{password}
 Format RT 5 -> User : str{UserInfos}
 Format RT 7 & 20 -> "answer" : int{0/1}
 Format RT 9 & 10-> "msg" : str{message}
@@ -118,5 +118,3 @@ Format RT 26 -> User : str{User/Room Infos}
 User file infos :
    -> id : userid
    -> nick : nickname
-   -> pwd : password
-

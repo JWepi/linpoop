@@ -69,7 +69,7 @@ Packet * Actions::ReqCreateAccount(const char * str)
 
   tosend->setItem("answer", 0);
 
-  if (u->hasItem("nick") && u->hasItem("pwd"))
+  if (u->hasItem("nick"))
   {
      userid = Usersmanager::generateUserId();
      u->setItem("id", userid);
@@ -88,7 +88,7 @@ Packet * Actions::ReqConnectUser(const char * str)
 
   User * u = Usersmanager::findUser(db->getIntItem("id"));
   
-  if (db->getStrItem("pwd") == u->getStrItem("pwd"))
+  if (db->getStrItem("nick") == u->getStrItem("nick"))
   {
     Databuilder * db = new Databuilder();
     userid = u->getIntItem("id");
