@@ -101,3 +101,11 @@ Format RT 17 & 19 -> "answer" : int{0/1}
 Format RT 21 -> "name" : str{chatroomname}
 Format RT 22 -> "answer" : int{0/1}
 Format RT 24 -> User : str{UserInfos}
+
+
+
+User file infos :
+   -> id : userid
+   -> nick : nickname
+   -> pwd : password
+
