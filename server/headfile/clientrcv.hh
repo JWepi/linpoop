@@ -9,11 +9,12 @@ class Clientrcv : public Listener
     int acceptfd;
     Actions * actions;
     LPServer * serv;
+    std::string ip;
 
   public:
 
     void * golisten(void * val);
-    Clientrcv(int afd, Actions * a, LPServer * s);
+    Clientrcv(int afd, Actions * a, LPServer * s, std::string myip);
     Clientrcv();
     ~Clientrcv();
 };

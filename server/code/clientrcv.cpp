@@ -5,6 +5,7 @@ void * Clientrcv::golisten(void * val)
 {
   char buff[Datas::BUFF];
   ssize_t bytesreceived = 0;
+  int userid = 0;
 
   while (1)
   {
@@ -28,8 +29,15 @@ void * Clientrcv::golisten(void * val)
     Packet * sendpacket = this->actions->Guidance(recvpacket);
 
     if (sendpacket->getType() == 5 && sendpacket->getTarget() != 0)
+    {
+      userid = sendpacket->getTarget();
+      User * u = Usersmanager::findUser(userid);
+      u->setItem("ip", this->ip);
+      Usersmanager::setUserInfo(userid, u);
+      sendpacket = new Packet(sendpacket->getType(), sendpacket->getOrigin(),
+      sendpacket->getTarget(), u->build().c_str());
       this->actions->getCore()->adduser(sendpacket->getTarget(), this->acceptfd);
-
+    }
 
     if (Datas::DEBUG)
     {
@@ -52,14 +60,18 @@ void * Clientrcv::golisten(void * val)
     this->serv->sendpacket(this->acceptfd, (char *)sendpacket->buildPacket(),
     sendpacket->getPacketSize());
   }
+
+  this->actions->getCore()->rmvuser(userid);
+
   return(NULL);
 }
 
-Clientrcv::Clientrcv(int afd, Actions * a, LPServer * s) : Listener()
+Clientrcv::Clientrcv(int afd, Actions * a, LPServer * s, std::string myip) : Listener()
 {
   this->acceptfd = afd;
   this->actions = a;
   this->serv = s;
+  this->ip = myip;
 }
 
 Clientrcv::Clientrcv() : Listener()

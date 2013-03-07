@@ -7,13 +7,17 @@ void * LPServer::golisten(void * val)
 
   while(1)
   {
+    sockaddr_in * pv4addr = (struct sockaddr_in *) &this->client;
+    char ip[INET_ADDRSTRLEN];
+
     this->acceptfd = accept(this->sockfd, (struct sockaddr *) &this->client, &clientaddrlen);
+    inet_ntop(AF_INET, &pv4addr->sin_addr.s_addr, ip, INET_ADDRSTRLEN);
 
     if (acceptfd == -1)
       utils->err("Server::golisten", "accept function failed");
 
     Clientrcv * cr;
-    cr = new Clientrcv(this->acceptfd, this->actions, this);
+    cr = new Clientrcv(this->acceptfd, this->actions, this, ip);
     listen_tome(cr);
 
     std::cout << "A new client arrived" << std::endl << std::endl;
