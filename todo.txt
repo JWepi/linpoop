@@ -1,0 +1,103 @@
+Protocol :
+| request type | request origin [0|1|*] | request target [0|1|*] | data |
+|          1         |                4                |              4                   |   *    |
+
+________________________________________________________
+________________________________________________________
+
+
+0 -> unknow origin or target
+1 -> server
+* -> client (from 1000000 to MAXINT)
+
+
+Cote Client :
+P RT 1 - Ping
+
+P RT 2 - Demande de création de compte
+R RT 3 - Reception à la demande de creation de compte
+
+P RT 4 - Demande de connexion à un compte
+R RT 5 - Reception de la demande de connexion à un compte
+
+P RT 6 - Envoi de demande d'ajout en ami à un autre utilisateur
+P RT 7 - Envoi de réponse à demande d'ajout d'ami par un autre utilisateur
+R RT 8 - Reception d'une demande d'ajout d'ami
+R RT 20 - Reception de la réponse à la demande d'ajout d'ami
+
+P RT 9 - Envoi de messages à un autre utilisateur
+R RT 10 - Affichage des messages reçus par un autre utilisateur
+
+P RT 11 - Envoi de messages à un groupe d'utilisateurs
+R RT 12 - Affichage des messages reçus par un groupe d'utilisateurs
+
+RT 15 - Demande de modification de status
+
+RT 16 - Envoi de demande d'envoi de fichier à un autre utilisateur
+RT 17 - Envoi de réponse à demande d'envoi de fichier par un autre utilisateur
+RT 18 - Reception d'une demande d'envoi de fichier
+RT 19 - Reception de la réponse à la demande d'envoi de fichier
+
+P RT 21 - Demande de création de chatroom
+R RT 22 - Reception à la demande de creation de chatroom
+
+P RT 23 - Envoi de demande de supression d'ami à un autre utilisateur
+
+P RT 24 - Reception de modification de parametre utilisateur
+________________________
+
+NORT - Enregistrement des logs de chat
+NORT - Faire une recherche de logs à partir d'une chaine
+
+________________________________________________________
+________________________________________________________
+
+Cote Server :
+P RT 1 - Ping
+
+R RT 2 - Reception de demande de création de compte 
+P RT 3 - Envoi de réponse à la demande de creation de compte
+
+R RT 4 - Reception de demande de connexion à un compte
+P RT 5 - Envoi de réponse à la demande de connexion à un compte
+
+R RT 6 - Reception de demande d'ajout en ami d'un utilisateur à un autre
+R RT 7 - Reception de réponse à demande d'ajout d'ami d'une utilisateur pour un autre
+P RT 8 - Envoi d'une demande d'ajout d'ami d'un utilisateur 
+P RT 20 - Envoi de la réponse à la demande d'ajout d'ami
+
+R RT 9 - Reception d'un message adressé à un autre utilisateur
+P RT 10 - Envoi d'un message à un utilisateur
+
+R RT 11 - Reception d'un message adressé à un groupe d'utilisateurs
+P RT 12 - Envoi d'un message à un groupe d'utilisateurs
+
+R RT 15 - Reception de demande de modification de status d'un utilisateur
+
+R RT 16 - Reception de demande d'envoi de fichier d'un utilisateur à un autre
+R RT 17 - Reception de réponse à demande d'envoi de fichier d'une utilisateur pour un autre
+P RT 18 - Envoi d'une demande d'envoi de fichier d'un utilisateur 
+P RT 19 - Envoi de la réponse à la demande d'envoi de fichier
+
+R RT 21 - Reception de demande de création de chatroom
+P RT 22 - Envoi de réponse à la demande de creation de chatroom
+
+R RT 23 - Reception de demande de supression d'ami
+
+R RT 24 - Reception de modification de parametre utilisateur
+
+
+
+Format RT 2 -> "nick" : str{nickname}, "pwd" : str{password}
+Format RT 3 -> "answer" : int{0/1}
+Format RT 4 -> "pwd" : str{password}
+Format RT 5 -> User : str{UserInfos}
+Format RT 7 & 20 -> "answer" : int{0/1}
+Format RT 9 & 10-> "msg" : str{message}
+Format RT 11 & 12-> "msg" : str{message}
+Format RT 15 -> "status" : str{message}
+Format RT 16 & 18 -> "name" : str{filename}
+Format RT 17 & 19 -> "answer" : int{0/1}
+Format RT 21 -> "name" : str{chatroomname}
+Format RT 22 -> "answer" : int{0/1}
+Format RT 24 -> User : str{UserInfos}
