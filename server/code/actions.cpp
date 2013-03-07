@@ -76,6 +76,7 @@ Packet * Actions::ReqCreateAccount(const char * str)
      Usersmanager::setUserInfo(userid, u);
      created = true;
      tosend->setItem("answer", 1);
+     tosend->setItem("id", userid);
   }
 
   return(AnsCreateAccount(userid, tosend->build()));
