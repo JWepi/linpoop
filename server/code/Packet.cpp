@@ -80,5 +80,6 @@ const char *Packet::getData() const
 
 int Packet::getPacketSize() const
 {
-	return (sizeof(this->_type) + sizeof(this->_origin) + sizeof(this->_target) + strlen(this->_data) + 1);
+	int size = _data ? strlen (_data) : 0;
+	return (sizeof(this->_type) + sizeof(this->_origin) + sizeof(this->_target) + size + 1);
 }

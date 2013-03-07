@@ -30,7 +30,6 @@ Packet * Actions::Guidance(Packet * pack)
   std::cout << "   - Request dst  : " << pack->getTarget() << std::endl;
   std::cout << "   - Request data : " << pack->getData() << std::endl << std::endl;
 
-  // Switch a remplacer par une map
 
   switch(pack->getType())
   {
@@ -48,13 +47,16 @@ Packet * Actions::Guidance(Packet * pack)
       return(UsrSentMsg(pack->getOrigin(), pack->getTarget(), pack->getData()));
     case 11 :
       return(UsrSentMsgGroup(pack->getOrigin(), pack->getTarget(), pack->getData()));
+    case 13 :
+	  return(ReqOnFriends(pack->getOrigin()));
     case 15 :
       return(UsrStatusMod(pack->getOrigin(), pack->getData()));
     case 16 :
       return(UsrReqSendFile(pack->getOrigin(), pack->getTarget(), pack->getData()));
     case 17 :
       return(UsrRcvAnsSendFile(pack->getOrigin(), pack->getTarget(), pack->getData()));
-
+	default :
+	  std::cout << "SWITCH BITE CUL BITE POIL" << std::endl;
   }
 }
 
@@ -118,7 +120,7 @@ Packet * Actions::AnsFriendReq(int srcUserid, int dstUserid, const char * str)
 
     u1->addFriend(u2->getIntItem("id"));
     u2->addFriend(u1->getIntItem("id"));
-
+	std::cout << u1->getStrItem("nick") << " et " << u2->getStrItem("nick") << " sont amis" << std::endl;
     Usersmanager::setUserInfo(u1->getIntItem("id"), u1->build());
     Usersmanager::setUserInfo(u2->getIntItem("id"), u2->build());
   }
@@ -216,16 +218,22 @@ Packet * Actions::ReqModUser(int userid, const char * str)
 // 13
 Packet * Actions::ReqOnFriends(int userid)
 {
+  std::cout << "jesus" << std::endl;
   User * usr = Usersmanager::findUser(userid);
+  std::cout << "jesus" << std::endl;
   User * ret = new User();
+  std::cout << "jesus" << std::endl;
   std::map<int, std::string> flist = usr->getFriends();
+  std::cout << "jesus" << std::endl;
   std::map<int, std::string>::iterator it;
-
+  std::cout << "jesus" << std::endl;
   for(it = flist.begin(); it != flist.end(); it++)
   {
+	std::cout << it->second << " est mon ami" << std::endl;
     if(this->core->isusr(it->first))
       ret->addFriend(it->first);
   }
+  std::cout << "jesus" << std::endl;
 
   return(this->SendOnFriends(userid, ret->build().c_str()));
 }
