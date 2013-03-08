@@ -55,8 +55,10 @@ Packet * Actions::Guidance(Packet * pack)
       return(UsrReqSendFile(pack->getOrigin(), pack->getTarget(), pack->getData()));
     case 17 :
       return(UsrRcvAnsSendFile(pack->getOrigin(), pack->getTarget(), pack->getData()));
-	default :
-	  std::cout << "SWITCH BITE CUL BITE POIL" << std::endl;
+    case 25 :
+      return(ReqInfos(pack->getOrigin(), pack->getTarget()));
+    default :
+	  std::cout << "Non handled request !!!" << std::endl;
   }
 }
 
@@ -291,6 +293,16 @@ Packet * Actions::SendMsg(int srcUserid, int dstUserid, const char * str)
 {
   Packet * pack = new Packet (10, srcUserid, dstUserid, str);
   int fd = this->core->getusrfd(dstUserid);
+
+      std::cout << "Created packet : " << std::endl;
+
+      std::cout << "   - Request type : " << pack->getType() << std::endl;
+      std::cout << "   - Request src  : " << pack->getOrigin() << std::endl;
+      std::cout << "   - Request dst  : " << pack->getTarget() << std::endl;
+      std::cout << "   - Request data : " << pack->getData() << std::endl << std::endl;
+
+
+
 
   if(this->core->isusr(dstUserid))
     LPServer::sendpacket(fd, (char *)pack->buildPacket(), pack->getPacketSize());

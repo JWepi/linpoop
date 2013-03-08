@@ -4,6 +4,7 @@
 void * LPServer::golisten(void * val)
 {
   socklen_t clientaddrlen = 0;
+	struct in_addr	addr;
 
   while(1)
   {
@@ -11,7 +12,8 @@ void * LPServer::golisten(void * val)
 
     this->acceptfd = accept(this->sockfd, (struct sockaddr *) &this->client, &clientaddrlen);
     inet_ntop(AF_INET, &(this->client.sin_addr), ip, INET_ADDRSTRLEN);
-
+    inet_aton(ip, &addr);
+	std::cout << inet_ntoa(addr) << "MESSAGE A COTE" << std::endl;
     if (acceptfd == -1)
       utils->err("Server::golisten", "accept function failed");
 
@@ -19,7 +21,6 @@ void * LPServer::golisten(void * val)
     cr = new Clientrcv(this->acceptfd, this->actions, this, ip);
     listen_tome(cr);
 
-    std::cout << "Client connected with ip " << ip << std::endl;
   }
 
   if (close(acceptfd) == -1)

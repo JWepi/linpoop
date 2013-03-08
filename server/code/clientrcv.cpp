@@ -42,12 +42,14 @@ void * Clientrcv::golisten(void * val)
     {
       userid = sendpacket->getTarget();
       User * u = Usersmanager::findUser(userid);
+	  std::cout << "ceci est mon ip bordel " << this->ip << std::endl;
       u->setItem("ip", this->ip);
       Usersmanager::setUserInfo(userid, u);
       sendpacket = new Packet(sendpacket->getType(), sendpacket->getOrigin(),
       sendpacket->getTarget(), u->build().c_str());
       this->actions->getCore()->adduser(sendpacket->getTarget(), this->acceptfd);
-    }
+	  std::cout << "ip bordel " << Usersmanager::findUser(userid)->build() << std::endl;
+	}
 
     if (1)
     {
